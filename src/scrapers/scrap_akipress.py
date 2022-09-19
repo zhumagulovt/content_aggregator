@@ -1,45 +1,87 @@
-from bs4 import BeautifulSoup as Bs
+from .base import Scraper
 
-from .client import parse_site
 
-URL = "https://akipress.org/"
+class ScrapAkipress(Scraper):
 
-def scrap():
-    
-    html = parse_site(URL)
-    news_max = 10
+    url = "https://akipress.org/"
 
-    soup = Bs(html, 'html.parser')
-    
-    result = {
-        'main_news': [],
-        'latest_news': []
-    }
+    def get_main_news(self):
+        result = []
 
-    # Main news
-    main_news = soup.find('div', {'id': 'block-mainnews'}).\
+        main_news = self.soup.find('div', {'id': 'block-mainnews'}).\
                         find_all('a', {'class': 'topaddlink'})[:5]
-    for news in main_news:
 
-        result['main_news'].append({
-            'time': news.span.text,
-            'link': news.get('href'),
-            'title': news.text[6:]
-        })
+        for news in main_news:
 
-    # Latest news
-    latest_news_table = soup.find('table', attrs={'class': 'sections section-last'})
-    latest_news = latest_news_table.find_all('tr', {
-        'class': lambda x: x and x.startswith('js'),
-        'style': lambda x: x != 'display:none;'
-    })[:10]
+            result.append({
+                'time': news.span.text,
+                'link': news.get('href'),
+                'title': news.text[6:]
+            })
+        return result
+    
+    def get_latest_news(self):
+        result = []
 
-    for news in latest_news:
+        latest_news_table = self.soup.find('table', attrs={'class': 'sections section-last'})
 
-        result['latest_news'].append({
-            'time': news.find('td', {'class': 'datetxt'}).text.strip(),
-            'link': 'https:' + news.find('a').get('href'),
-            'title': news.find('a').text.strip()
-        })
+        latest_news = latest_news_table.find_all('tr', {
+            'class': lambda x: x and x.startswith('js'),
+            'style': lambda x: x != 'display:none;'
+        })[:10]
 
-    return result
+        for news in latest_news:
+
+            result.append({
+                'time': news.find('td', {'class': 'datetxt'}).text.strip(),
+                'link': 'https:' + news.find('a').get('href'),
+                'title': news.find('a').text.strip()
+            })
+
+        return result
+
+# from bs4 import BeautifulSoup as Bs
+
+# from .client import parse_site
+
+# URL = "https://akipress.org/"
+
+# def scrap():
+    
+#     html = parse_site(URL)
+#     news_max = 10
+
+#     soup = Bs(html, 'html.parser')
+    
+#     result = {
+#         'main_news': [],
+#         'latest_news': []
+#     }
+
+#     # Main news
+#     main_news = soup.find('div', {'id': 'block-mainnews'}).\
+#                         find_all('a', {'class': 'topaddlink'})[:5]
+#     for news in main_news:
+
+#         result['main_news'].append({
+#             'time': news.span.text,
+#             'link': news.get('href'),
+#             'title': news.text[6:]
+#         })
+
+#     # Latest news
+    # latest_news_table = soup.find('table', attrs={'class': 'sections section-last'})
+    # latest_news = latest_news_table.find_all('tr', {
+    #     'class': lambda x: x and x.startswith('js'),
+    #     'style': lambda x: x != 'display:none;'
+    # })[:10]
+
+    # for news in latest_news:
+
+    #     result['latest_news'].append({
+    #         'time': news.find('td', {'class': 'datetxt'}).text.strip(),
+    #         'link': 'https:' + news.find('a').get('href'),
+    #         'title': news.find('a').text.strip()
+    #     })
+
+    # return result
