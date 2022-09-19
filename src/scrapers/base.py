@@ -14,9 +14,18 @@ class Scraper:
         html = parse_site(url)
         cls.soup = BeautifulSoup(html, 'html.parser')
 
+    @classmethod
+    def as_scraper(cls, **kwargs):
+        """"""
+        def scrap():
+            self = cls()
+            return self.get_news()
+        
+        return scrap()
+
     def get_main_news(self):
         """Get list of main or popular news"""
-        
+
         return None
 
     def get_latest_news(self):
@@ -30,5 +39,5 @@ class Scraper:
         result = {}
         result['main_news'] = self.get_main_news()
         result['latest_news'] = self.get_latest_news()
-
+        # print()
         return result

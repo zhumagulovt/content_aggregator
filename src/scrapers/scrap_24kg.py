@@ -34,6 +34,7 @@ class Scrap24kg(Scraper):
             })
         return result
 
+
 # def scrap():
     # return Scrap_24kg().
 
