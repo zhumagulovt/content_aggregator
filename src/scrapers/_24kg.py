@@ -8,7 +8,7 @@ class Scrap24kg(Scraper):
     def get_main_news(self):
         result = []
 
-        main_news = self.soup.find('div', {'class': 'mainNewsList'}).find_all('div')
+        main_news = self.soup.find('div', {'class': 'mainNewsList'}).find_all('div')[:5]
 
         for news in main_news:
             result.append({
@@ -20,7 +20,7 @@ class Scrap24kg(Scraper):
     def get_latest_news(self):
         result = []
 
-        latest_news = self.soup.find('div', {'id': 'newslist'}).find_all('div', {'class': 'one'})[:10]
+        latest_news = self.soup.find('div', {'id': 'newslist'}).find_all('div', {'class': 'one'})[:5]
 
         for news in latest_news:
 

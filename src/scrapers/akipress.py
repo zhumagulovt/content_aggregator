@@ -29,7 +29,7 @@ class ScrapAkipress(Scraper):
         latest_news = latest_news_table.find_all('tr', {
             'class': lambda x: x and x.startswith('js'),
             'style': lambda x: x != 'display:none;'
-        })[:10]
+        })[:5]
 
         for news in latest_news:
 

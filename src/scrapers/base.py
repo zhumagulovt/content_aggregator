@@ -14,6 +14,12 @@ class Scraper:
         html = parse_site(url)
         cls.soup = BeautifulSoup(html, 'html.parser')
 
+    def make_request(self, path):
+        """Make second request and update soup"""
+        url = self.url
+        html = parse_site(url + path)
+        self.soup = BeautifulSoup(html, 'html.parser')
+
     @classmethod
     def as_scraper(cls, **kwargs):
         """"""

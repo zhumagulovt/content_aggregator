@@ -8,7 +8,7 @@ class ScraperVesti(Scraper):
     def get_main_news(self):
         result = []
         
-        main_news = self.soup.find('ul', {'class': 'nspList active nspCol4'}).find_all('li')
+        main_news = self.soup.find('ul', {'class': 'nspList active nspCol4'}).find_all('li')[:5]
 
         for news in main_news:
             result.append({
