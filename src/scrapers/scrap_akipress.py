@@ -9,14 +9,15 @@ class ScrapAkipress(Scraper):
         result = []
 
         main_news = self.soup.find('div', {'id': 'block-mainnews'}).\
-                        find_all('a', {'class': 'topaddlink'})[:5]
+                            find_all('div', {'class': lambda x: x and (
+                                x.startswith('nowr_bigimg_elem' or x.startswith('nowr_elem'))
+                            )})[:5]
 
         for news in main_news:
-
             result.append({
-                'time': news.span.text,
-                'link': news.get('href'),
-                'title': news.text[6:]
+                'time': news.find('div', {'class': 'nowr_date'}).text.strip()[:5],
+                'link': news.find('a').get('href'),
+                'title': news.find('a').text.strip()
             })
         return result
     
